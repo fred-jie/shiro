@@ -256,7 +256,7 @@ public class DelegatingSubject implements Subject {
     * @Description: shiro登录
     * @Param: [token]
     * @return: void
-    * @Author: 陆伟杰
+    * @Author: FredJie
     * @Date: 2020/4/27
     */
     public void login(AuthenticationToken token) throws AuthenticationException {
