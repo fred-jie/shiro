@@ -24,35 +24,30 @@ import org.apache.shiro.util.ThreadContext;
 
 
 /**
- * Accesses the currently accessible {@code Subject} for the calling code depending on runtime environment.
- *
- * @since 0.2
- */
+* @Description: 核心功能是获取SecurityManager以及Subject
+* @Author: FredJie
+* @Date: 2020/4/27
+*/
 public abstract class SecurityUtils {
 
     /**
-     * ONLY used as a 'backup' in VM Singleton environments (that is, standalone environments), since the
-     * ThreadContext should always be the primary source for Subject instances when possible.
-     */
+    * @Description: 因为使用static定义SecurityManager，所以SecurityManager对象在应用中时单一存在的；
+    * @Author: FredJie
+    * @Date: 2020/4/27
+    */
     private static SecurityManager securityManager;
 
     /**
-     * Returns the currently accessible {@code Subject} available to the calling code depending on
-     * runtime environment.
-     * <p/>
-     * This method is provided as a way of obtaining a {@code Subject} without having to resort to
-     * implementation-specific methods.  It also allows the Shiro team to change the underlying implementation of
-     * this method in the future depending on requirements/updates without affecting your code that uses it.
-     *
-     * @return the currently accessible {@code Subject} accessible to the calling code.
-     * @throws IllegalStateException if no {@link Subject Subject} instance or
-     *                               {@link SecurityManager SecurityManager} instance is available with which to obtain
-     *                               a {@code Subject}, which which is considered an invalid application configuration
-     *                               - a Subject should <em>always</em> be available to the caller.
-     */
+    * @Description: 获取Subject对象
+    * @Author: FredJie
+    * @Date: 2020/4/27
+    */
     public static Subject getSubject() {
+        //1.先从ThreadContext中获取Subject对象
         Subject subject = ThreadContext.getSubject();
+        //2.如果不存在，则创建新的Subject，再存放到ThreadContext中，以便下次可以获取。
         if (subject == null) {
+            //通过 Subject.Builder类提供的buildSubject()方法来创建Subject
             subject = (new Subject.Builder()).buildSubject();
             ThreadContext.bind(subject);
         }
@@ -95,27 +90,21 @@ public abstract class SecurityUtils {
         SecurityUtils.securityManager = securityManager;
     }
 
-    /**
-     * Returns the SecurityManager accessible to the calling code.
-     * <p/>
-     * This implementation favors acquiring a thread-bound {@code SecurityManager} if it can find one.  If one is
-     * not available to the executing thread, it will attempt to use the static singleton if available (see the
-     * {@link #setSecurityManager setSecurityManager} method for more on the static singleton).
-     * <p/>
-     * If neither the thread-local or static singleton instances are available, this method throws an
-     * {@code UnavailableSecurityManagerException} to indicate an error - a SecurityManager should always be accessible
-     * to calling code in an application. If it is not, it is likely due to a Shiro configuration problem.
-     *
-     * @return the SecurityManager accessible to the calling code.
-     * @throws UnavailableSecurityManagerException
-     *          if there is no {@code SecurityManager} instance available to the
-     *          calling code, which typically indicates an invalid application configuration.
-     */
+   /***
+   * @Description: 获取SecurityManager对象
+   * @Param: []
+   * @return: org.apache.shiro.mgt.SecurityManager
+   * @Author: FredJie
+   * @Date: 2020/4/27
+   */
     public static SecurityManager getSecurityManager() throws UnavailableSecurityManagerException {
+        //1.从ThreadContext中获取SecurityManager
         SecurityManager securityManager = ThreadContext.getSecurityManager();
+        //2.如果没有，则从SecurityUtils属性securityManager中获取
         if (securityManager == null) {
             securityManager = SecurityUtils.securityManager;
         }
+        //3.一定要存在一个SecurityManager实例对象，否则抛异常。
         if (securityManager == null) {
             String msg = "No SecurityManager accessible to the calling code, either bound to the " +
                     ThreadContext.class.getName() + " or as a vm static singleton.  This is an invalid application " +

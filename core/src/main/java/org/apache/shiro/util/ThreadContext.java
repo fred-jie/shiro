@@ -29,20 +29,11 @@ import java.util.Map;
 
 
 /**
- * A ThreadContext provides a means of binding and unbinding objects to the
- * current thread based on key/value pairs.
- * <p/>
- * <p>An internal {@link java.util.HashMap} is used to maintain the key/value pairs
- * for each thread.</p>
- * <p/>
- * <p>If the desired behavior is to ensure that bound data is not shared across
- * threads in a pooled or reusable threaded environment, the application (or more likely a framework) must
- * bind and remove any necessary values at the beginning and end of stack
- * execution, respectively (i.e. individually explicitly or all via the <tt>clear</tt> method).</p>
- *
- * @see #remove()
- * @since 0.1
- */
+* @Description: ThreadContext的作用其实就是通过每个线程的ThreadLocalMap来存储线程自己的SecurityManager对象以及Subject对象，
+ * 因为用到了ThreadLocal因此这里的操作都是线程安全地。
+* @Author: FredJie
+* @Date: 2020/4/27
+*/
 public abstract class ThreadContext {
 
     /**
@@ -50,7 +41,17 @@ public abstract class ThreadContext {
      */
     private static final Logger log = LoggerFactory.getLogger(ThreadContext.class);
 
+    /**
+    * @Description: SecurityManager对象对应的key
+    * @Author: FredJie
+    * @Date: 2020/4/27
+    */
     public static final String SECURITY_MANAGER_KEY = ThreadContext.class.getName() + "_SECURITY_MANAGER_KEY";
+    /**
+    * @Description: Subject对象对应的key，这里是通过反射来定义这两个key的值
+    * @Author: FredJie
+    * @Date: 2020/4/27
+    */
     public static final String SUBJECT_KEY = ThreadContext.class.getName() + "_SUBJECT_KEY";
 
     private static final ThreadLocal<Map<Object, Object>> resources = new InheritableThreadLocalMap<Map<Object, Object>>();

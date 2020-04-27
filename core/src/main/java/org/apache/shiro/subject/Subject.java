@@ -638,6 +638,7 @@ public interface Subject {
                 throw new NullPointerException("SecurityManager method argument cannot be null.");
             }
             this.securityManager = securityManager;
+            // 创建了SubjectContext实例对象（Subject和SubjectContext是一一对应的）
             this.subjectContext = newSubjectContextInstance();
             if (this.subjectContext == null) {
                 throw new IllegalStateException("Subject instance returned from 'newSubjectContextInstance' " +

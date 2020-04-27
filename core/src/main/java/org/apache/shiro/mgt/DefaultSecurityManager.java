@@ -303,50 +303,28 @@ public class DefaultSecurityManager extends SessionsSecurityManager {
         return new DefaultSubjectContext(subjectContext);
     }
 
-    /**
-     * This implementation functions as follows:
-     * <p/>
-     * <ol>
-     * <li>Ensures the {@code SubjectContext} is as populated as it can be, using heuristics to acquire
-     * data that may not have already been available to it (such as a referenced session or remembered principals).</li>
-     * <li>Calls {@link #doCreateSubject(org.apache.shiro.subject.SubjectContext)} to actually perform the
-     * {@code Subject} instance creation.</li>
-     * <li>calls {@link #save(org.apache.shiro.subject.Subject) save(subject)} to ensure the constructed
-     * {@code Subject}'s state is accessible for future requests/invocations if necessary.</li>
-     * <li>returns the constructed {@code Subject} instance.</li>
-     * </ol>
-     *
-     * @param subjectContext any data needed to direct how the Subject should be constructed.
-     * @return the {@code Subject} instance reflecting the specified contextual data.
-     * @see #ensureSecurityManager(org.apache.shiro.subject.SubjectContext)
-     * @see #resolveSession(org.apache.shiro.subject.SubjectContext)
-     * @see #resolvePrincipals(org.apache.shiro.subject.SubjectContext)
-     * @see #doCreateSubject(org.apache.shiro.subject.SubjectContext)
-     * @see #save(org.apache.shiro.subject.Subject)
-     * @since 1.0
-     */
+      /***
+      * @Description: 创建一个Subject
+      * @Param: [subjectContext]
+      * @return: org.apache.shiro.subject.Subject
+      * @Author: FredJie
+      * @Date: 2020/4/27
+      */
     public Subject createSubject(SubjectContext subjectContext) {
-        //create a copy so we don't modify the argument's backing map:
+        //新建一个subjectContext，并且复制原来的属性
         SubjectContext context = copy(subjectContext);
 
-        //ensure that the context has a SecurityManager instance, and if not, add one:
+        //保证SubjectContext包含安全管理器
         context = ensureSecurityManager(context);
 
-        //Resolve an associated Session (usually based on a referenced session ID), and place it in the context before
-        //sending to the SubjectFactory.  The SubjectFactory should not need to know how to acquire sessions as the
-        //process is often environment specific - better to shield the SF from these details:
+        //这里如果context的sessionId不为空，就会从SessionManager查询对应sessionId的Session对象，最后将其设进context里
         context = resolveSession(context);
-
-        //Similarly, the SubjectFactory should not require any concept of RememberMe - translate that here first
-        //if possible before handing off to the SubjectFactory:
         context = resolvePrincipals(context);
 
+        //开始创建Subject
         Subject subject = doCreateSubject(context);
 
-        //save this subject for future reference if necessary:
-        //(this is needed here in case rememberMe principals were resolved and they need to be stored in the
-        //session, so we don't constantly rehydrate the rememberMe PrincipalCollection on every operation).
-        //Added in 1.2:
+        //调用SubjectDAO的save方法
         save(subject);
 
         return subject;

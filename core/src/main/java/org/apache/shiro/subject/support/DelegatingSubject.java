@@ -260,8 +260,9 @@ public class DelegatingSubject implements Subject {
     * @Date: 2020/4/27
     */
     public void login(AuthenticationToken token) throws AuthenticationException {
-        //清空Session
+        //从session中移除RUN_AS_PRINCIPALS_SESSION_KEY属性
         clearRunAsIdentitiesInternal();
+        //调用安全管理器进行登录，会返回一个Subject对象
         Subject subject = securityManager.login(this, token);
 
         //后面是认证成功后的执行代码，就是将Subject的相关内容设置好
