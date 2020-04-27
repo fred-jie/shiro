@@ -251,12 +251,21 @@ public class DelegatingSubject implements Subject {
         securityManager.checkRoles(getPrincipals(), roles);
     }
 
+    /*
+    **
+    * @Description: shiro登录
+    * @Param: [token]
+    * @return: void
+    * @Author: 陆伟杰
+    * @Date: 2020/4/27
+    */
     public void login(AuthenticationToken token) throws AuthenticationException {
+        //清空Session
         clearRunAsIdentitiesInternal();
         Subject subject = securityManager.login(this, token);
 
+        //后面是认证成功后的执行代码，就是将Subject的相关内容设置好
         PrincipalCollection principals;
-
         String host = null;
 
         if (subject instanceof DelegatingSubject) {
