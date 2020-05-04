@@ -52,8 +52,11 @@ public class Ini implements Map<String, Ini.Section> {
 
     private final Map<String, Section> sections;
 
-    /**
-     * Creates a new empty {@code Ini} instance.
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 初始化一个Ini
      */
     public Ini() {
         this.sections = new LinkedHashMap<String, Section>();
@@ -116,26 +119,28 @@ public class Ini implements Map<String, Ini.Section> {
         return Collections.unmodifiableCollection(sections.values());
     }
 
-    /**
-     * Returns the {@link Section} with the given name or {@code null} if no section with that name exists.
-     *
-     * @param sectionName the name of the section to retrieve.
-     * @return the {@link Section} with the given name or {@code null} if no section with that name exists.
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 根据sectionName返回相应的Section,若不存在则返回null
      */
     public Section getSection(String sectionName) {
         String name = cleanName(sectionName);
         return sections.get(name);
     }
 
-    /**
-     * Ensures a section with the specified name exists, adding a new one if it does not yet exist.
-     *
-     * @param sectionName the name of the section to ensure existence
-     * @return the section created if it did not yet exist, or the existing Section that already existed.
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 根据sectionName返回对应的Section
      */
+
     public Section addSection(String sectionName) {
         String name = cleanName(sectionName);
         Section section = getSection(name);
+        //若section不存在，则新建一个Section并放入sections这个Map中。
         if (section == null) {
             section = new Section(name);
             this.sections.put(name, section);
@@ -153,6 +158,12 @@ public class Ini implements Map<String, Ini.Section> {
         String name = cleanName(sectionName);
         return this.sections.remove(name);
     }
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 对字符串进行处理
+     */
 
     private static String cleanName(String sectionName) {
         String name = StringUtils.clean(sectionName);

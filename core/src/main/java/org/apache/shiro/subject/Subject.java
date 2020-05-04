@@ -627,12 +627,13 @@ public interface Subject {
             this(SecurityUtils.getSecurityManager());
         }
 
-        /**
-         * Constructs a new {@link Subject.Builder} instance which will use the specified {@code SecurityManager} when
-         * building the {@code Subject} instance.
-         *
-         * @param securityManager the {@code SecurityManager} to use when building the {@code Subject} instance.
+        /***
+          *
+          * @Author: FredJie
+          * @Date:  2020/5/4
+          * @Description: 创建一个subjectContext对象，并将securityManager注入到subjectContext对象中。
          */
+
         public Builder(SecurityManager securityManager) {
             if (securityManager == null) {
                 throw new NullPointerException("SecurityManager method argument cannot be null.");
@@ -825,24 +826,13 @@ public interface Subject {
             return this;
         }
 
-        /**
-         * Creates and returns a new {@code Subject} instance reflecting the cumulative state acquired by the
-         * other methods in this class.
-         * <p/>
-         * This {@code Builder} instance will still retain the underlying state after this method is called - it
-         * will not clear it; repeated calls to this method will return multiple {@link Subject} instances, all
-         * reflecting the exact same state.  If a new (different) {@code Subject} is to be constructed, a new
-         * {@code Builder} instance must be created.
-         * <p/>
-         * <b>Note</b> that the returned {@code Subject} instance is <b>not</b> automatically bound to the application
-         * (thread) for further use.  That is,
-         * {@link org.apache.shiro.SecurityUtils SecurityUtils}.{@link org.apache.shiro.SecurityUtils#getSubject() getSubject()}
-         * will not automatically return the same instance as what is returned by the builder.  It is up to the
-         * framework developer to bind the returned {@code Subject} for continued use if desired.
-         *
-         * @return a new {@code Subject} instance reflecting the cumulative state acquired by the
-         *         other methods in this class.
+        /***
+          *
+          * @Author: FredJie
+          * @Date:  2020/5/4
+          * @Description: 调用securityManager中的createSubject方法，传入本来中的subjectContext对象生成一个Subject对象
          */
+
         public Subject buildSubject() {
             return this.securityManager.createSubject(this.subjectContext);
         }

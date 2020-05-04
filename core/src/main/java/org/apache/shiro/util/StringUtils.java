@@ -125,22 +125,13 @@ public class StringUtils {
         return lcStr.equals(lcPrefix);
     }
 
-    /**
-     * Returns a 'cleaned' representation of the specified argument.  'Cleaned' is defined as the following:
-     * <p/>
-     * <ol>
-     * <li>If the specified <code>String</code> is <code>null</code>, return <code>null</code></li>
-     * <li>If not <code>null</code>, {@link String#trim() trim()} it.</li>
-     * <li>If the trimmed string is equal to the empty String (i.e. &quot;&quot;), return <code>null</code></li>
-     * <li>If the trimmed string is not the empty string, return the trimmed version</li>.
-     * </ol>
-     * <p/>
-     * Therefore this method always ensures that any given string has trimmed text, and if it doesn't, <code>null</code>
-     * is returned.
-     *
-     * @param in the input String to clean.
-     * @return a populated-but-trimmed String or <code>null</code> otherwise
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 去除字符串头尾两端的空白字符，若为空则返回null,否则返回处理过的字符串。
      */
+
     public static String clean(String in) {
         String out = in;
 

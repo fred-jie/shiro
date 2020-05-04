@@ -149,7 +149,8 @@ public class DelegatingSubjectTest {
         users.put("user3", "user3,role3");
         IniSecurityManagerFactory factory = new IniSecurityManagerFactory(ini);
         SecurityManager sm = factory.getInstance();
-
+        SecurityUtils.setSecurityManager(sm);
+        SecurityUtils.getSubject();
         //login as user1
         Subject subject = new Subject.Builder(sm).buildSubject();
         subject.login(new UsernamePasswordToken("user1", "user1"));

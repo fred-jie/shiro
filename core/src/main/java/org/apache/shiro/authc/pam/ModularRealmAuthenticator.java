@@ -263,6 +263,7 @@ public class ModularRealmAuthenticator extends AbstractAuthenticator {
     protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken) throws AuthenticationException {
         assertRealmsConfigured();
         Collection<Realm> realms = getRealms();
+        //判断有几个realm
         if (realms.size() == 1) {
             return doSingleRealmAuthentication(realms.iterator().next(), authenticationToken);
         } else {
