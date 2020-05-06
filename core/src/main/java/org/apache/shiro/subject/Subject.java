@@ -251,33 +251,27 @@ public interface Subject {
      */
     void checkPermissions(Collection<Permission> permissions) throws AuthorizationException;
 
-    /**
-     * Returns {@code true} if this Subject has the specified role, {@code false} otherwise.
-     *
-     * @param roleIdentifier the application-specific role identifier (usually a role id or role name).
-     * @return {@code true} if this Subject has the specified role, {@code false} otherwise.
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 判断当前用户是否拥有该角色，有返回true,否则返回false
      */
     boolean hasRole(String roleIdentifier);
 
-    /**
-     * Checks if this Subject has the specified roles, returning a boolean array indicating
-     * which roles are associated.
-     * <p/>
-     * This is primarily a performance-enhancing method to help reduce the number of
-     * {@link #hasRole} invocations over the wire in client/server systems.
-     *
-     * @param roleIdentifiers the application-specific role identifiers to check (usually role ids or role names).
-     * @return a boolean array where indices correspond to the index of the
-     *         roles in the given identifiers.  A true value indicates this Subject has the
-     *         role at that index.  False indicates this Subject does not have the role at that index.
+    /***
+      *
+      * @Author: FredJie
+      * @Date:  2020/5/4
+      * @Description: 判断当前用户是否拥有这些角色，有返回boolean类型数组。
      */
     boolean[] hasRoles(List<String> roleIdentifiers);
 
-    /**
-     * Returns {@code true} if this Subject has all of the specified roles, {@code false} otherwise.
+    /***
      *
-     * @param roleIdentifiers the application-specific role identifiers to check (usually role ids or role names).
-     * @return true if this Subject has all the roles, false otherwise.
+     * @Author: FredJie
+     * @Date:  2020/5/4
+     * @Description: 判断当前用户是否同时拥有该角色，有返回true,否则返回false
      */
     boolean hasAllRoles(Collection<String> roleIdentifiers);
 
